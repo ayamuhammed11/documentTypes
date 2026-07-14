@@ -9,28 +9,35 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --primary: #001F5F;
-    --primary-hover: #103788;
-    --link: #2955B1;
-    --brand-green: #1FC29C;
-    --brand-green-hover: #16AD8B;
-    --destructive: #A50017;
-    --destructive-bg: #FBEBED;
-    --success: #34A853;
+    /* Kashier design tokens */
+    --primary: #001F5F;          /* Ocean 100 */
+    --primary-hover: #103788;    /* Ocean 90  */
+    --ocean-10: #F1F6FF;         /* outline / ghost hover */
+    --link: #2955B1;             /* Ocean 80  */
+    --accent: #00BCB4;           /* Kashier Teal (brand) */
+    --accent-hover: #00938D;     /* Kashier 90 */
+    --accent-10: #EAFFFE;        /* Kashier 10 */
+    --destructive: #A50017;      /* Watermelon base */
+    --destructive-hover: #830012;/* Watermelon 90 */
+    --destructive-bg: #FFEAED;   /* Watermelon 10 */
+    --success: #4AAB4E;          /* Lemon base */
+    --success-bg: #F3FFF4;       /* Lemon 10 */
+    --success-text: #1A541D;     /* Lemon 100 */
 
-    --foreground: #202020;
-    --border: #E6E8E8;
-    --border-subtle: #F0F1F2;
+    --foreground: #202020;       /* Cadet black */
+    --border: #E6E8E8;           /* Neutral 08 */
+    --border-subtle: #F5F6F6;    /* Neutral 09 */
     --muted: #F5F6F6;
-    --cadet-base: #556767;
+    --cadet-base: #556767;       /* Neutral base */
+    --cadet-02: #697979;
     --cadet-04: #839090;
     --cadet-05: #919C9C;
     --cadet-06: #B3BBBB;
 
-    --pill-bg: #F1F1F6;
-    --pill-text: #4B4B63;
+    --pill-bg: #F5F6F6;          /* Neutral 09 */
+    --pill-text: #697979;        /* Neutral 02 */
 
-    --radius: 6px;
+    --radius: 4px;               /* Figma default */
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -55,7 +62,7 @@
   .sidebar { width: 232px; background: #fff; min-height: 100vh; padding: 22px 14px 30px;
     border-right: 1px solid var(--border-subtle);
     position: sticky; top: 0; align-self: flex-start; max-height: 100vh; overflow-y: auto; flex-shrink: 0; z-index: 60; }
-  .brand { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 26px; color: var(--brand-green);
+  .brand { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 26px; color: var(--accent);
     padding: 0 10px; margin-bottom: 26px; letter-spacing: -.01em; }
   .nav-link { display: flex; align-items: center; gap: 12px; padding: 9px 12px; border-radius: 8px;
     color: var(--cadet-base); text-decoration: none; font-size: 14px; margin-bottom: 2px; position: relative; }
@@ -65,7 +72,7 @@
   .nav-link:not(.active):hover { background: #F7F8F8; }
   .nav-link .new-badge { position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
     font-family: 'Outfit', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: .06em;
-    color: var(--brand-green); background: #E4F8F2; border-radius: 4px; padding: 2px 5px; }
+    color: var(--accent); background: var(--accent-10); border-radius: 4px; padding: 2px 5px; }
   .nav-section { margin-top: 14px; }
   .nav-section .section-head { display: flex; align-items: center; justify-content: space-between;
     padding: 6px 12px; color: var(--primary); font-weight: 600; font-size: 13px; cursor: pointer; user-select: none; }
@@ -107,18 +114,18 @@
   .page-head .sub { font-size: 14px; color: var(--cadet-base); max-width: 520px; line-height: 1.5; margin: 0; }
   .head-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
-  /* Buttons */
+  /* Buttons — Kashier design-system variants */
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; font-weight: 600;
-    border-radius: var(--radius); cursor: pointer; border: 1px solid transparent; padding: 0 18px; height: 42px;
-    transition: background .12s ease, border-color .12s ease; white-space: nowrap; }
-  .btn-outline { background: #fff; color: var(--cadet-base); border-color: var(--border); }
-  .btn-outline:hover { background: var(--muted); }
-  .btn-green { background: var(--brand-green); color: #fff; }
-  .btn-green:hover { background: var(--brand-green-hover); }
-  .btn-ghost { background: #fff; color: var(--cadet-base); border-color: var(--border); }
-  .btn-ghost:hover { background: var(--muted); }
+    border-radius: var(--radius); cursor: pointer; border: 1.5px solid transparent; padding: 0 18px; height: 40px;
+    transition: background .12s ease, border-color .12s ease, color .12s ease; white-space: nowrap; }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .btn-outline { background: #fff; color: var(--primary); border-color: var(--primary); }
+  .btn-outline:hover { background: var(--ocean-10); }
+  .btn-ghost { background: transparent; color: var(--primary); border-color: transparent; }
+  .btn-ghost:hover { background: var(--ocean-10); }
   .btn-danger { background: var(--destructive); color: #fff; }
-  .btn-danger:hover { background: #8a0013; }
+  .btn-danger:hover { background: var(--destructive-hover); }
 
   /* Toolbar */
   .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
@@ -131,7 +138,7 @@
   .count { font-size: 14px; color: var(--cadet-04); white-space: nowrap; }
 
   /* Table */
-  .table-card { border: 1px solid var(--border-subtle); border-radius: 10px; overflow: hidden; background: #fff; }
+  .table-card { border: 1px solid var(--border-subtle); border-radius: 8px; overflow: hidden; background: #fff; }
   .table-scroll { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; min-width: 760px; }
   thead th { text-align: left; font-family: 'Noto Sans', sans-serif; font-size: 11px; font-weight: 700;
@@ -159,7 +166,7 @@
   .max-size { font-weight: 600; color: var(--foreground); font-size: 14px; white-space: nowrap; }
 
   .row-actions { display: flex; align-items: center; gap: 10px; }
-  .row-actions button { width: 32px; height: 32px; border: none; background: none; border-radius: 6px;
+  .row-actions button { width: 32px; height: 32px; border: none; background: none; border-radius: 4px;
     color: var(--cadet-04); cursor: pointer; display: flex; align-items: center; justify-content: center; }
   .row-actions button:hover { background: var(--muted); color: var(--primary); }
   .row-actions .del:hover { color: var(--destructive); background: var(--destructive-bg); }
@@ -171,7 +178,7 @@
   .thumb { border: 1px solid var(--border); border-radius: 8px; padding: 0; width: 76px; height: 52px; overflow: hidden;
     background: #fff; cursor: pointer; flex-shrink: 0; display: block; }
   .thumb svg, .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .thumb:hover { border-color: var(--brand-green); box-shadow: 0 0 0 3px rgba(31,194,156,.16); }
+  .thumb:hover { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,31,95,.12); }
   .name-cell .meta { min-width: 0; }
 
   /* File-rule badges */
@@ -179,7 +186,7 @@
   .file-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; border-radius: 5px; padding: 4px 9px; }
   .file-tag svg { width: 13px; height: 13px; }
   .file-tag.single { background: var(--pill-bg); color: var(--pill-text); }
-  .file-tag.multi { background: #EAF9F4; color: #12836B; }
+  .file-tag.multi { background: var(--success-bg); color: var(--success-text); }
   .file-cap { font-size: 11px; color: var(--cadet-05); text-transform: uppercase; letter-spacing: .04em; font-weight: 700; }
   .file-labels { display: flex; flex-wrap: wrap; gap: 5px; }
   .file-labels .lchip { font-size: 11px; font-weight: 600; color: var(--primary); background: #EEF1FB; border: 1px solid #DCE3F5;
@@ -224,8 +231,8 @@
   .format-opts label { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: var(--radius);
     padding: 9px 14px; font-size: 13px; font-weight: 600; color: var(--cadet-base); cursor: pointer; user-select: none; }
   .format-opts label:hover { background: var(--muted); }
-  .format-opts input { accent-color: var(--brand-green); width: 16px; height: 16px; }
-  .format-opts label.checked { border-color: var(--brand-green); background: #EAFBF5; color: var(--brand-green-hover); }
+  .format-opts input { accent-color: var(--primary); width: 16px; height: 16px; }
+  .format-opts label.checked { border-color: var(--primary); background: var(--ocean-10); color: var(--primary); }
 
   .size-wrap { display: inline-flex; align-items: center; gap: 8px; }
   .size-wrap input { width: 110px; }
@@ -239,17 +246,17 @@
   .rule-opt { display: flex; align-items: flex-start; gap: 8px; border: 1px solid var(--border); border-radius: var(--radius);
     padding: 12px; cursor: pointer; transition: border-color .12s ease, background .12s ease; }
   .rule-opt:hover { background: var(--muted); }
-  .rule-opt.checked { border-color: var(--brand-green); background: #EAFBF5; }
-  .rule-opt input { accent-color: var(--brand-green); margin-top: 2px; }
+  .rule-opt.checked { border-color: var(--primary); background: var(--ocean-10); }
+  .rule-opt input { accent-color: var(--primary); margin-top: 2px; }
   .rule-opt span { display: flex; flex-direction: column; gap: 2px; }
   .rule-opt b { font-size: 13px; color: var(--foreground); font-weight: 600; }
   .rule-opt small { font-size: 11.5px; color: var(--cadet-05); line-height: 1.35; }
 
   .label-row { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; margin-bottom: 10px; align-items: center; }
-  .label-thumb { width: 58px; height: 42px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+  .label-thumb { width: 58px; height: 42px; border: 1px solid var(--border); border-radius: 4px; overflow: hidden;
     background: #FAFBFC; cursor: pointer; padding: 0; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
     color: var(--cadet-05); position: relative; }
-  .label-thumb:hover { border-color: var(--brand-green); color: var(--brand-green); }
+  .label-thumb:hover { border-color: var(--primary); color: var(--primary); }
   .label-thumb img, .label-thumb svg.illus { width: 100%; height: 100%; object-fit: cover; }
   .label-thumb .ph { width: 20px; height: 20px; }
   .thumb-reset { position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; border-radius: 50%;
@@ -259,7 +266,7 @@
 
   /* Preview: per-label files gallery */
   .view-files { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 2px; }
-  .vfile { border: 1px solid var(--border-subtle); border-radius: 10px; overflow: hidden; background: #fff; }
+  .vfile { border: 1px solid var(--border-subtle); border-radius: 8px; overflow: hidden; background: #fff; }
   .vfile-img { background: #FAFBFC; border-bottom: 1px solid var(--border-subtle); }
   .vfile-img img, .vfile-img svg { width: 100%; height: auto; display: block; }
   .vfile-name { padding: 9px 12px; font-size: 13px; font-weight: 600; color: var(--primary); }
@@ -279,8 +286,8 @@
   .btn-sm { height: 38px; padding: 0 14px; font-size: 13px; }
 
   /* Lightbox / preview */
-  .view-img { width: 100%; border: 1px solid var(--border-subtle); border-radius: 10px; background: #FAFBFC; padding: 16px; margin-bottom: 18px; }
-  .view-img svg, .view-img img { width: 100%; height: auto; display: block; border-radius: 6px; }
+  .view-img { width: 100%; border: 1px solid var(--border-subtle); border-radius: 8px; background: #FAFBFC; padding: 16px; margin-bottom: 18px; }
+  .view-img svg, .view-img img { width: 100%; height: auto; display: block; border-radius: 4px; }
   .view-sub { color: var(--cadet-05); font-size: 13px; direction: rtl; margin-top: 4px; }
   .view-desc { font-size: 13.5px; color: var(--cadet-base); line-height: 1.5; margin: 14px 0 4px; }
   .view-check-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--cadet-05); margin: 18px 0 10px; }
@@ -399,7 +406,7 @@
             <svg class="hi-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
             Export CSV
           </button>
-          <button class="btn btn-green" id="addBtn">
+          <button class="btn btn-primary" id="addBtn">
             <svg class="hi-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
             Add Document Type
           </button>
@@ -516,7 +523,7 @@
       </div>
       <div class="modal-foot">
         <button class="btn btn-ghost" id="formCancel">Cancel</button>
-        <button class="btn btn-green" id="formSave">Save Document Type</button>
+        <button class="btn btn-primary" id="formSave">Save Document Type</button>
       </div>
     </div>
   </div>
@@ -611,11 +618,11 @@
     const S = s => `<svg viewBox="0 0 280 176" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">${s}</svg>`;
     switch (kind) {
       case 'national-id': return S(`
-        <rect x="18" y="24" width="244" height="128" rx="14" fill="#EAF9F4" stroke="#1FC29C" stroke-width="2"/>
+        <rect x="18" y="24" width="244" height="128" rx="14" fill="#EAF9F4" stroke="#00BCB4" stroke-width="2"/>
         <clipPath id="p"><rect x="40" y="46" width="66" height="84" rx="8"/></clipPath>
         <rect x="40" y="46" width="66" height="84" rx="8" fill="#CDEDE4"/>
         <g clip-path="url(#p)"><circle cx="73" cy="80" r="16" fill="#8FD4C4"/><circle cx="73" cy="140" r="30" fill="#8FD4C4"/></g>
-        <rect x="124" y="52" width="112" height="11" rx="5.5" fill="#1FC29C"/>
+        <rect x="124" y="52" width="112" height="11" rx="5.5" fill="#00BCB4"/>
         <rect x="124" y="74" width="96" height="8" rx="4" fill="#B7D8CF"/>
         <rect x="124" y="92" width="112" height="8" rx="4" fill="#D6E8E3"/>
         <rect x="124" y="110" width="72" height="8" rx="4" fill="#D6E8E3"/>
@@ -655,16 +662,16 @@
         <rect x="66" y="84" width="120" height="7" rx="3.5" fill="#E6E8E8"/>
         <path d="M70 132c10-14 18-14 26 0s16 10 26-6" stroke="#001F5F" stroke-width="2.5" stroke-linecap="round"/>
         <line x1="66" y1="146" x2="150" y2="146" stroke="#C6CCCF" stroke-width="1.5"/>
-        <circle cx="196" cy="132" r="20" fill="none" stroke="#1FC29C" stroke-width="2" stroke-dasharray="3 4"/>
-        <path d="M188 132l6 6 10-12" stroke="#1FC29C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`);
+        <circle cx="196" cy="132" r="20" fill="none" stroke="#00BCB4" stroke-width="2" stroke-dasharray="3 4"/>
+        <path d="M188 132l6 6 10-12" stroke="#00BCB4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`);
       case 'proof-address': return S(`
         <rect x="42" y="14" width="196" height="148" rx="8" fill="#FFFFFF" stroke="#E6E8E8"/>
         <path d="M62 52h28M62 52l14-14 14 14M66 52v18h20V52" stroke="#001F5F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         <rect x="110" y="34" width="104" height="9" rx="4.5" fill="#001F5F"/>
         <rect x="110" y="52" width="70" height="7" rx="3.5" fill="#E6E8E8"/>
         <rect x="62" y="92" width="152" height="7" rx="3.5" fill="#E6E8E8"/>
-        <rect x="58" y="112" width="160" height="36" rx="6" fill="#EAF9F4" stroke="#1FC29C" stroke-width="1.5"/>
-        <rect x="70" y="122" width="90" height="7" rx="3.5" fill="#1FC29C"/>
+        <rect x="58" y="112" width="160" height="36" rx="6" fill="#EAF9F4" stroke="#00BCB4" stroke-width="1.5"/>
+        <rect x="70" y="122" width="90" height="7" rx="3.5" fill="#00BCB4"/>
         <rect x="70" y="134" width="120" height="6" rx="3" fill="#A9DDD0"/>`);
       default: return S(`
         <rect x="30" y="16" width="220" height="144" rx="12" fill="#F7F8FA" stroke="#E6E8E8"/>
