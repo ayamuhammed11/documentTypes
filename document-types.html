@@ -273,15 +273,16 @@
     border-radius: var(--radius); padding: 10px; margin-bottom: 10px; }
   .info-field-row .if-label { flex: 1 1 160px; }
   .info-field-row .if-type { flex: 0 0 118px; width: 118px; cursor: pointer; }
-  .info-field-row .if-required { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600;
-    color: var(--cadet-base); white-space: nowrap; cursor: pointer; user-select: none; }
-  .info-field-row .if-required input { accent-color: var(--primary); width: 15px; height: 15px; }
   .info-field-row .if-options { flex: 1 1 100%; margin-top: 2px; }
   .if-hint { font-size: 11.5px; color: var(--cadet-05); margin: -4px 0 12px; }
   .req-flag { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; border-radius: 4px;
     padding: 2px 7px; white-space: nowrap; }
   .req-flag.required { background: var(--destructive-bg); color: var(--destructive); }
   .req-flag.optional { background: var(--pill-bg); color: var(--pill-text); }
+  .req-flag-toggle { border: 1px solid transparent; cursor: pointer; padding: 5px 10px; font-size: 11px;
+    display: inline-flex; align-items: center; gap: 5px; transition: background .12s ease, border-color .12s ease; }
+  .req-flag-toggle:hover { border-color: currentColor; }
+  .req-flag-toggle .flag-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 
   .format-opts { display: flex; flex-wrap: wrap; gap: 10px; }
   .format-opts label { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: var(--radius);
@@ -1055,12 +1056,23 @@
       <input class="inp if-label" placeholder="Field label, e.g. IBAN" value="${esc(label)}">
       <select class="inp if-type">
         <option value="text">Text</option>
+        <option value="number">Number</option>
         <option value="date">Date</option>
         <option value="dropdown">Dropdown</option>
       </select>
-      <label class="if-required"><input type="checkbox" class="if-required-cb"${required ? ' checked' : ''}>Required</label>
+      <button type="button" class="req-flag req-flag-toggle if-required-flag ${required ? 'required' : 'optional'}" data-required="${required ? '1' : '0'}" title="Click to toggle required / optional">
+        <span class="flag-dot"></span>${required ? 'Required' : 'Optional'}
+      </button>
       <button type="button" class="cond-remove" title="Remove field">&times;</button>
       <input class="inp if-options" placeholder="Options, comma separated — e.g. Male, Female" value="${esc(options.join(', '))}" style="display:${type === 'dropdown' ? '' : 'none'};">`;
+    wrap.querySelector('.if-required-flag').addEventListener('click', e => {
+      const btn = e.currentTarget;
+      const nowRequired = btn.dataset.required !== '1';
+      btn.dataset.required = nowRequired ? '1' : '0';
+      btn.classList.toggle('required', nowRequired);
+      btn.classList.toggle('optional', !nowRequired);
+      btn.innerHTML = `<span class="flag-dot"></span>${nowRequired ? 'Required' : 'Optional'}`;
+    });
     wrap.querySelector('.if-type').value = type;
     wrap.querySelector('.if-type').addEventListener('change', e => {
       wrap.querySelector('.if-options').style.display = e.target.value === 'dropdown' ? '' : 'none';
@@ -1223,7 +1235,7 @@
         : [];
       return {
         label: r.querySelector('.if-label').value.trim(),
-        type, required: r.querySelector('.if-required-cb').checked, options
+        type, required: r.querySelector('.if-required-flag').dataset.required === '1', options
       };
     }).filter(f => f.label);
     const formats = Array.from($('formatOpts').querySelectorAll('input:checked')).map(c => c.value);
