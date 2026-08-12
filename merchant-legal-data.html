@@ -718,10 +718,16 @@
     return Math.round((d - today) / 864e5);
   }
 
+  /* A "Number" field (set via the Type dropdown in Document Types) only accepts numeric
+     values. Digits, one optional leading minus, one optional decimal point. */
+  const NUMBER_RE = /^-?\d+(\.\d+)?$/;
+  const isNumberMismatch = (f, v) => f.type === 'number' && v && !NUMBER_RE.test(v.trim());
+
   /* Returns: empty | invalid | expired | expiring | ok — for any value, typed or stored. */
   function stateFor(f, v) {
     if (!v) return 'empty';
     if (f.pattern && !new RegExp(f.pattern).test(v.replace(/\s/g, ''))) return 'invalid';
+    if (isNumberMismatch(f, v)) return 'invalid';
     if (f.isExpiry) {
       const d = daysUntil(v);
       if (d !== null && d < 0) return 'expired';
@@ -741,6 +747,7 @@
      actually reached that field (touched it, or tried to save with it empty). */
   function noteInfo(f, v, flagMissing) {
     const st = stateFor(f, v);
+    if (st === 'invalid' && isNumberMismatch(f, v)) return { cls: 'f-note error', text: 'This field only accepts numbers.' };
     if (st === 'invalid')  return { cls: 'f-note error', text: 'Value does not match the expected format' + (f.hint ? ' — ' + f.hint : '.') };
     if (st === 'empty' && flagMissing) return { cls: 'f-note error', text: 'This field is required.' };
     if (st === 'expired')  return { cls: 'f-note warn',  text: 'Expired on ' + fmtDate(v) + ' — a renewed document is needed.' };
@@ -796,9 +803,15 @@
         .concat(f.options.map(o => '<option value="' + esc(o) + '"' + (o === v ? ' selected' : '') + '>' + esc(o) + '</option>'));
       control = '<select class="inp' + (st === 'invalid' ? ' err' : '') + '" id="' + inputId + '" data-key="' + f.key + '">' + opts.join('') + '</select>';
     } else {
-      const type = f.type === 'date' ? 'date' : (f.type === 'number' ? 'number' : 'text');
+      /* Number fields stay type="text" (with a numeric keyboard hint) rather than
+         type="number" — a native number input silently discards anything invalid
+         before it ever reaches app validation, so mistyped values vanish with no
+         error shown. Keeping it text lets stateFor()/noteInfo() below catch and
+         explain the mismatch instead. */
+      const type = f.type === 'date' ? 'date' : 'text';
+      const inputmode = f.type === 'number' ? ' inputmode="decimal"' : '';
       control = '<input class="inp' + (st === 'invalid' || st === 'expired' ? ' err' : '') + '" id="' + inputId + '" data-key="' + f.key +
-        '" type="' + type + '" value="' + esc(v) + '" placeholder="' + esc(f.placeholder || '') + '">';
+        '" type="' + type + '"' + inputmode + ' value="' + esc(v) + '" placeholder="' + esc(f.placeholder || '') + '">';
     }
 
     /* Always render the note element so live validation has something to write into. */
