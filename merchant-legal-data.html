@@ -595,7 +595,7 @@
         fields: rt.infoFields.map(f => ({
           key: slug(f.label),
           label: f.label,
-          type: f.type === 'dropdown' ? 'dropdown' : (f.type === 'date' ? 'date' : 'text'),
+          type: ['dropdown','date','number'].includes(f.type) ? f.type : 'text',
           required: !!f.required,
           options: f.type === 'dropdown' ? (f.options || []) : undefined
         }))
