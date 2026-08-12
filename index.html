@@ -279,10 +279,16 @@
     padding: 2px 7px; white-space: nowrap; }
   .req-flag.required { background: var(--destructive-bg); color: var(--destructive); }
   .req-flag.optional { background: var(--pill-bg); color: var(--pill-text); }
-  .req-flag-toggle { border: 1px solid transparent; cursor: pointer; padding: 5px 10px; font-size: 11px;
-    display: inline-flex; align-items: center; gap: 5px; transition: background .12s ease, border-color .12s ease; }
-  .req-flag-toggle:hover { border-color: currentColor; }
-  .req-flag-toggle .flag-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+  /* Required flag — on/off switch */
+  .if-required-switch { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; white-space: nowrap; }
+  .if-required-switch .if-req-label { font-size: 12.5px; font-weight: 600; color: var(--cadet-base); }
+  .req-switch { position: relative; width: 34px; height: 18px; border-radius: 999px; background: var(--border);
+    border: none; padding: 0; cursor: pointer; flex-shrink: 0; transition: background .15s ease; }
+  .req-switch:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+  .req-switch.on { background: var(--primary); }
+  .req-switch-knob { position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%;
+    background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.25); transition: left .15s ease; }
+  .req-switch.on .req-switch-knob { left: 18px; }
 
   .format-opts { display: flex; flex-wrap: wrap; gap: 10px; }
   .format-opts label { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: var(--radius);
@@ -1060,19 +1066,24 @@
         <option value="date">Date</option>
         <option value="dropdown">Dropdown</option>
       </select>
-      <button type="button" class="req-flag req-flag-toggle if-required-flag ${required ? 'required' : 'optional'}" data-required="${required ? '1' : '0'}" title="Click to toggle required / optional">
-        <span class="flag-dot"></span>${required ? 'Required' : 'Optional'}
-      </button>
+      <div class="if-required-switch">
+        <span class="if-req-label">Required</span>
+        <button type="button" class="req-switch if-required-flag${required ? ' on' : ''}" data-required="${required ? '1' : '0'}"
+          role="switch" aria-checked="${required ? 'true' : 'false'}" title="Toggle required on / off">
+          <span class="req-switch-knob"></span>
+        </button>
+      </div>
       <button type="button" class="cond-remove" title="Remove field">&times;</button>
       <input class="inp if-options" placeholder="Options, comma separated — e.g. Male, Female" value="${esc(options.join(', '))}" style="display:${type === 'dropdown' ? '' : 'none'};">`;
-    wrap.querySelector('.if-required-flag').addEventListener('click', e => {
-      const btn = e.currentTarget;
-      const nowRequired = btn.dataset.required !== '1';
-      btn.dataset.required = nowRequired ? '1' : '0';
-      btn.classList.toggle('required', nowRequired);
-      btn.classList.toggle('optional', !nowRequired);
-      btn.innerHTML = `<span class="flag-dot"></span>${nowRequired ? 'Required' : 'Optional'}`;
-    });
+    const reqSwitch = wrap.querySelector('.if-required-flag');
+    const toggleRequired = () => {
+      const nowRequired = reqSwitch.dataset.required !== '1';
+      reqSwitch.dataset.required = nowRequired ? '1' : '0';
+      reqSwitch.classList.toggle('on', nowRequired);
+      reqSwitch.setAttribute('aria-checked', nowRequired ? 'true' : 'false');
+    };
+    reqSwitch.addEventListener('click', toggleRequired);
+    wrap.querySelector('.if-req-label').addEventListener('click', toggleRequired);
     wrap.querySelector('.if-type').value = type;
     wrap.querySelector('.if-type').addEventListener('change', e => {
       wrap.querySelector('.if-options').style.display = e.target.value === 'dropdown' ? '' : 'none';
