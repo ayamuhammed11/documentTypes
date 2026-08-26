@@ -749,7 +749,8 @@
                 ? ((f.options && f.options.length) ? f.options : (meta.options || []))
                 : undefined,
               isExpiry: !!meta.isExpiry,
-              pattern: f.pattern || undefined                                    // regex rule, any type
+              pattern: f.pattern || undefined,                                   // regex rule, any type
+              patternMessage: f.patternMessage || undefined                      // agent-authored message when it fails
             };
           })
         };
@@ -942,6 +943,10 @@
 
   function noteInfo(f, v, flagMissing) {
     const st = stateFor(f, v);
+    /* An agent-authored message (set on the regex rule in Document Types) always wins
+       once the value is invalid — it's written to explain that field's own rule, so it
+       takes priority over both the generic per-type message and the numbers-only one. */
+    if (st === 'invalid' && f.patternMessage) return { cls: 'f-note error', text: f.patternMessage };
     if (st === 'invalid' && isNumberMismatch(f, v)) return { cls: 'f-note error', text: 'This field only accepts numbers.' };
     if (st === 'invalid') {
       const lead = REGEX_MISMATCH_LEAD[f.type] || REGEX_MISMATCH_LEAD.text;
