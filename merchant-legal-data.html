@@ -931,10 +931,22 @@
   /* The message under a field, for whatever value it currently holds.
      `flagMissing` renders the "required" reminder — only passed once the agent has
      actually reached that field (touched it, or tried to save with it empty). */
+  /* What the regex-rule mismatch note leads with, per field type — the rest of the
+     sentence (the optional field-specific hint) is appended the same way for all. */
+  const REGEX_MISMATCH_LEAD = {
+    text: "This value doesn't match the required format",
+    number: "This number doesn't match the required format",
+    date: "This date doesn't match the required format",
+    dropdown: "This value doesn't match the required format"
+  };
+
   function noteInfo(f, v, flagMissing) {
     const st = stateFor(f, v);
     if (st === 'invalid' && isNumberMismatch(f, v)) return { cls: 'f-note error', text: 'This field only accepts numbers.' };
-    if (st === 'invalid')  return { cls: 'f-note error', text: 'Value does not match the expected format' + (f.hint ? ' — ' + f.hint : '.') };
+    if (st === 'invalid') {
+      const lead = REGEX_MISMATCH_LEAD[f.type] || REGEX_MISMATCH_LEAD.text;
+      return { cls: 'f-note error', text: lead + (f.hint ? ' — ' + f.hint : '.') };
+    }
     if (st === 'empty' && flagMissing) return { cls: 'f-note error', text: 'This field is required.' };
     if (st === 'expired')  return { cls: 'f-note warn',  text: 'Expired on ' + fmtDate(v) + ' — a renewed document is needed.' };
     if (st === 'expiring') return { cls: 'f-note warn',  text: 'Expires in ' + daysUntil(v) + ' days (' + fmtDate(v) + ').' };
