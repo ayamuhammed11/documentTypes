@@ -271,10 +271,10 @@
   .field-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   label.lbl { display: block; font-size: 13px; font-weight: 600; color: var(--cadet-base); margin-bottom: 7px; }
   label.lbl .req { color: var(--destructive); }
-  .inp, .modal textarea { width: 100%; border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px;
+  .inp, .modal textarea, .drawer-panel textarea { width: 100%; border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px;
     font-family: inherit; font-size: 14px; color: var(--foreground); background: #fff; }
-  .inp:focus, .modal textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,31,95,.08); }
-  .modal textarea { resize: vertical; min-height: 62px; line-height: 1.45; }
+  .inp:focus, .modal textarea:focus, .drawer-panel textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,31,95,.08); }
+  .modal textarea, .drawer-panel textarea { resize: vertical; min-height: 120px; line-height: 1.5; }
   .inp.err { border-color: var(--destructive); }
   .rtl { direction: rtl; }
 
